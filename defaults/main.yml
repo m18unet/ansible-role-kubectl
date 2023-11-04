@@ -1,2 +1,8 @@
 ---
-# defaults file for m18unet.test
+kubectl_version: 'v1.28.1'
+kubectl_platform: linux
+kubectl_arch: amd64
+kubectl_bin_path: /usr/local/bin/kubectl
+
+kubectl_download_url: ""
+kubectl_checksum: ""

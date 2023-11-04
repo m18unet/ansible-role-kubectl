@@ -1,2 +1,22 @@
 ---
-# tasks file for m18unet.test
+- name: Check the presence of the kubectl binary.
+  stat:
+    path: "{{ kubectl_bin_path }}"
+  register: kubectl_check
+
+- name: Check the kubectl version.
+  command: "{{ kubectl_bin_path }} version"
+  failed_when: false
+  changed_when: false
+  register: kubectl_current_version
+
+- name: Download kubectl binary.
+  get_url:
+    src: "{{ kubectl_download_url | default('https://dl.k8s.io/release/{{ kubectl_version }}/bin/{{ kubectl_platform }}/{{ kubectl_arch }}/kubectl', true) }}"
+    dest: "{{ kubectl_bin_path }}"
+    checksum: "{{ kubectl_checksum | default('https://dl.k8s.io/release/{{ kubectl_version }}/bin/{{ kubectl_platform }}/{{ kubectl_arch }}/kubectl.sha256', true) }}"
+    mode: 0755
+  register: kubectl_download
+  when: >-
+    not kubectl_check.stat.exists
+    or kubectl_version not in kubectl_current_version.stdout

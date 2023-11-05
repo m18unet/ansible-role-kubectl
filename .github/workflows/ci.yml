@@ -9,6 +9,10 @@ on:
   schedule:
     - cron: "23 19 29 * *"
 
+defaults:
+  run:
+    working-directory: 'm18unet.kubectl'
+
 jobs:
   lint:
     name: Lint
@@ -17,7 +21,7 @@ jobs:
       - name: Checkout the codebase.
         uses: actions/checkout@v4
         with:
-          path: "${{ github.repository }}"
+          path: "m18unet.kubectl"
 
       - name: Setup Python 3.
         uses: actions/setup-python@v4

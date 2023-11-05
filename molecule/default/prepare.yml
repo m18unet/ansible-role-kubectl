@@ -1,0 +1,11 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  gather_facts: false
+
+  vars:
+    kubectl_version: v1.22.10
+
+  roles:
+    - m18unet.kubectl

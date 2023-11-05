@@ -10,19 +10,8 @@
   changed_when: false
   register: kubectl_current_version
 
-- block:
-    - name: Fetch kubectl SHA256 checksum
-      uri:
-        url: "{{ kubectl_checksum_url }}"
-        return_content: true
-      register: kubectl_sha256
-
-    - name: Download kubectl binary.
-      get_url:
-        url: "{{ kubectl_download_url }}"
-        dest: "{{ kubectl_bin_path }}"
-        checksum: sha256:{{ kubectl_sha256.content }}
-        mode: 0755
+- name: Install the kubectl {{ kubectl_version }}
+  include_tasks: install.yml
   when: >-
     not kubectl_check.stat.exists
     or kubectl_version not in kubectl_current_version.stdout

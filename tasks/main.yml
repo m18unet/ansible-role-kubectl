@@ -5,18 +5,24 @@
   register: kubectl_check
 
 - name: Check the kubectl version.
-  command: "{{ kubectl_bin_path }} version"
+  command: "{{ kubectl_bin_path }} version --client"
   failed_when: false
   changed_when: false
   register: kubectl_current_version
 
-- name: Download kubectl binary.
-  get_url:
-    src: "{{ kubectl_download_url | default('https://dl.k8s.io/release/{{ kubectl_version }}/bin/{{ kubectl_platform }}/{{ kubectl_arch }}/kubectl', true) }}"
-    dest: "{{ kubectl_bin_path }}"
-    checksum: "{{ kubectl_checksum | default('https://dl.k8s.io/release/{{ kubectl_version }}/bin/{{ kubectl_platform }}/{{ kubectl_arch }}/kubectl.sha256', true) }}"
-    mode: 0755
-  register: kubectl_download
+- block:
+    - name: Fetch kubectl SHA256 checksum
+      uri:
+        url: "{{ kubectl_checksum_url }}"
+        return_content: true
+      register: kubectl_sha256
+
+    - name: Download kubectl binary.
+      get_url:
+        url: "{{ kubectl_download_url }}"
+        dest: "{{ kubectl_bin_path }}"
+        checksum: sha256:{{ kubectl_sha256.content }}
+        mode: 0755
   when: >-
     not kubectl_check.stat.exists
     or kubectl_version not in kubectl_current_version.stdout

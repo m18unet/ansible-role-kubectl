@@ -1,8 +1,7 @@
 ---
-kubectl_version: 'v1.28.1'
+kubectl_version: v1.28.1
 kubectl_platform: linux
 kubectl_arch: amd64
 kubectl_bin_path: /usr/local/bin/kubectl
-
-kubectl_download_url: ""
-kubectl_checksum: ""
+kubectl_download_url: https://dl.k8s.io/release/{{ kubectl_version }}/bin/{{ kubectl_platform }}/{{ kubectl_arch }}/kubectl
+kubectl_checksum_url: "{{ kubectl_download_url }}.sha256"

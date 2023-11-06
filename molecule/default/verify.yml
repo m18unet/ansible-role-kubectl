@@ -1,0 +1,19 @@
+---
+- name: Verify
+  hosts: all
+  become: false
+  gather_facts: false
+
+  vars_files:
+    - ../../defaults/main.yml
+
+  tasks:
+    - name: Check the kubectl version.
+      command: "{{ kubectl_bin_path }} version --client"
+      changed_when: false
+      register: kubectl_verify_version
+
+    - name: Verify kubectl's version is {{ kubectl_version }}.
+      assert:
+        that:
+          - kubectl_version in kubectl_verify_version.stdout

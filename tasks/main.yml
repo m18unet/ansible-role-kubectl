@@ -1,0 +1,17 @@
+---
+- name: Check the presence of the kubectl binary.
+  stat:
+    path: "{{ kubectl_bin_path }}"
+  register: kubectl_check
+
+- name: Check the kubectl version.
+  command: "{{ kubectl_bin_path }} version --client"
+  failed_when: false
+  changed_when: false
+  register: kubectl_current_version
+
+- name: Install kubectl {{ kubectl_version }}
+  include_tasks: install.yml
+  when: >-
+    not kubectl_check.stat.exists
+    or kubectl_version not in kubectl_current_version.stdout

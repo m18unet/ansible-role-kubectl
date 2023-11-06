@@ -1,0 +1,28 @@
+---
+galaxy_info:
+  author: m18unet
+  role_name: kubectl
+  description: An Ansible Role that installs kubectl.
+
+  license: MIT
+
+  min_ansible_version: 2.10.0
+
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+    - name: Amazon
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+
+  galaxy_tags:
+    - kubectl
+    - kubernetes
+    - k8s

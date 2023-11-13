@@ -19,7 +19,7 @@ None.
 ```yaml
 - hosts: all
   roles:
-    - m18uet.kubectl
+    - m18unet.kubectl
 ```
 
 ## License
